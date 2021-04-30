@@ -2,25 +2,19 @@
 <html>
 
 <head>
-    <title>This is the title of the webpage!</title>
+    <title>Chat Application</title>
 </head>
 
 <script src="./script.js"></script>
 <link rel="stylesheet" href="./style.css">
 
 <body>
+    <div id="wrapper">
+        <div id="chat-window"></div>
+        <textarea id="message-window" rows="4" cols="50"></textarea>
+        <button>Submit</button>
+    </div>
 
-    <p>Enter Resource ID Here:</p>
-    <input type="text" id="id"></input><br>
-    <button id="get-button">Get Button</button>
-    <br><br>
-    <p>Enter JSON Here:</p>
-    <textarea id="resource" rows="4" cols="50"></textarea>
-    <button id="put-button">Put Button</button>
-    <button id="post-button">Post Button</button>
-    <br><br>
-    <div>Response:</div>
-    <div id="response"></div>
 </body>
 
 </html>
