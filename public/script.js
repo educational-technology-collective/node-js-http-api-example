@@ -1,5 +1,6 @@
 window.addEventListener("load", function () {
 
+    let chatWindow = document.getElementById('chat-window');
     let messageWindow = document.getElementById('message-window');
     let button = document.getElementsByTagName('button')[0];
 
@@ -13,7 +14,7 @@ window.addEventListener("load", function () {
     
             let body = JSON.stringify({ data: message });
     
-            let response = await fetch('http://localhost:3000/api', {
+            let response = await fetch('http://localhost:3000/api/submit', {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache',
@@ -35,5 +36,29 @@ window.addEventListener("load", function () {
         }
 
     });
+
+
+    setInterval(async ()=>{
+
+        let response = await fetch('http://localhost:3000/api/poll', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        let message = JSON.parse((await response.text()));
+
+        chatWindow.innerHTML = "";
+
+        message.forEach((x)=>{
+            let div = document.createElement('div');
+            div.innerText = x;
+            chatWindow.appendChild(div);
+        });
+
+    }, 1000);
 
 });
