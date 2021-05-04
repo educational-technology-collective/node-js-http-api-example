@@ -14,7 +14,7 @@ window.addEventListener("load", function () {
     
             let body = JSON.stringify({ data: message });
     
-            let response = await fetch('http://localhost:3000/api/submit', {
+            let response = await fetch('http://localhost:3030/api/submit', {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache',
@@ -40,7 +40,7 @@ window.addEventListener("load", function () {
 
     setInterval(async ()=>{
 
-        let response = await fetch('http://localhost:3000/api/poll', {
+        let response = await fetch('http://localhost:3030/api/poll', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
