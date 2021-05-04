@@ -1,14 +1,33 @@
 const fs = require("fs").promises;
 const path = require("path");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3030;
 
-app.use(express.static('./public'));
+app.use(cookieParser());
+
+app.use(function (req, res, next) {
+
+    let session = req.cookies["session"];
+
+    console.log(req.cookies);
+
+    if (typeof session == "undefined") {
+
+        session = Math.random().toString();
+
+        res.cookie('session', session);
+    }
+
+    next();
+});
+
+app.use(express.static("./public"));
 
 app.use(express.json());
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
 
 // app.get('/products/:productId', async function (req, res) {
@@ -27,12 +46,21 @@ app.use(express.urlencoded({
 // });
 
 
-const messageBuffer = []
+const messageBuffer = {};
 
 app.post('/api/submit', async function (req, res) {
 
+    let session = req.cookies["session"];
+
     try {
-        messageBuffer.push(req.body.data);
+        if (!messageBuffer.hasOwnProperty(session)) {
+
+            messageBuffer[session] = [];
+        }
+
+        for (let key of Object.keys(messageBuffer)) {
+            messageBuffer[key].push(req.body.data);
+        }
 
         res.status(200).end();
     }
@@ -46,7 +74,12 @@ app.post('/api/poll', async function (req, res) {
 
     try {
 
-        res.status(200).end(JSON.stringify(messageBuffer));
+        let session = req.cookies["session"];
+
+        res.status(200).end(JSON.stringify(messageBuffer[session]), function () {
+            messageBuffer[session] = [];
+        });
+
     }
     catch (e) {
         console.error(e);

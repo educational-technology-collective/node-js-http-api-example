@@ -51,8 +51,6 @@ window.addEventListener("load", function () {
 
         let message = JSON.parse((await response.text()));
 
-        chatWindow.innerHTML = "";
-
         message.forEach((x)=>{
             let div = document.createElement('div');
             div.innerText = x;
